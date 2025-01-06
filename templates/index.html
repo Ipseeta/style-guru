@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Style Guru</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Style Guru</h1>
+        
+        <div class="media-container">
+            <video id="video" autoplay playsinline></video>
+            <canvas id="canvas" style="display: none;"></canvas>
+            <img id="captured-image" style="display: none;">
+        </div>
+
+        <div class="controls-container">
+            <div class="button-container">
+                <button id="capture-btn" class="btn primary-btn">Take Selfie</button>
+                <span class="separator">or</span>
+                <div class="file-upload">
+                    <input type="file" id="file-upload" accept="image/*">
+                </div>
+            </div>
+
+            <div id="video-container" style="display: none;">
+                <video id="video" autoplay playsinline></video>
+            </div>
+
+            <div id="preview-container" style="display: none;">
+                <canvas id="canvas" style="display: none;"></canvas>
+                <img id="captured-image" alt="Captured photo">
+            </div>
+
+            <select id="occasion-select">
+                <option value="">Select Occasion</option>
+                <option value="Casual">Casual</option>
+                <option value="Formal">Formal</option>
+                <option value="Business">Business</option>
+                <option value="Party">Party</option>
+            </select>
+
+            <button id="analyze-btn" class="btn">Style Me</button>
+        </div>
+
+        <div id="results"></div>
+    </div>
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>
