@@ -108,10 +108,12 @@ async function analyzeImage() {
                 if (result.error) {
                     resultsDiv.innerHTML = `<p class="error">${result.error}</p>`;
                 } else {
+                    const skinTone = result.skin.name;
+                    const skinSwatch = result.skin.hex;
                     const colorSwatches = result.colors.map(color => 
                         `<div class="color-swatch" style="display: inline-block; margin: 10px;">
                             <div style="text-align: center;">
-                                <div class="color-preview" style="background-color: ${color.hex}; width: 100px; height: 100px; margin-bottom: 5px; border-radius: 4px;"></div>
+                                <div class="color-preview" style="background-color: ${color.hex}; width: 100px; height: 30px; margin-bottom: 5px; border-radius: 4px;"></div>
                                 <span class="color-name" style="display: block;">${color.name}</span>
                             </div>
                         </div>`
@@ -123,7 +125,8 @@ async function analyzeImage() {
                             <p><strong>Age Range:</strong> ${result.age_range}</p>
                             <p><strong>Gender:</strong> ${result.gender}</p>
                             <p><strong>Hair:</strong> ${result.hair}</p>
-                            <p><strong>Skin Tone:</strong> ${result.skin}</p>
+                            <p><strong>Skin Tone:</strong> ${skinTone}</p>
+                            <div class="skin-preview" style="background-color: ${skinSwatch}; width: 100px; height: 30px; margin-bottom: 5px; border-radius: 4px;"></div>
                         </div>
                         <p><strong>Recommended Styles:</strong> ${result.styles}</p>
                         <div class="color-palette">
@@ -134,6 +137,7 @@ async function analyzeImage() {
                         </div>
                         <p><strong>Best Combination:</strong> ${result.combination}</p>
                     `;
+                
                 }
             } catch (parseError) {
                 console.error('Parse Error:', parseError);

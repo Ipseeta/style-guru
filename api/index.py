@@ -56,7 +56,7 @@ def analyze_selfie():
                                     "age_range": "estimated age range (e.g., '20-25')",
                                     "gender": "person's apparent gender",
                                     "hair": "hair color",
-                                    "skin": "skin tone (pale, light, medium, dark)",
+                                    "skin": {{"name": "skin tone", "hex": "#hexcode"}} where skin tone is (pale, light, medium, dark)",
                                     "styles": "list of recommended fashion styles for {occasion} occasion",
                                     "colors": [
                                         {{"name": "color name", "hex": "#hexcode"}},
