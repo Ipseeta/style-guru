@@ -117,3 +117,27 @@ button:disabled {
     max-width: 800px;
     margin: 0 auto;
 }
+
+.site-header {
+    padding: 20px 0;
+    margin-bottom: 30px;
+}
+
+.logo-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+}
+
+.logo {
+    width: 50px;  /* Adjust size as needed */
+    height: auto;
+    object-fit: contain;
+}
+
+h1 {
+    margin: 0;
+    color: #333;
+    font-size: 2.5rem;
+}
