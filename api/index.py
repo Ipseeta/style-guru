@@ -4,6 +4,7 @@ from openai import OpenAI
 import os
 from dotenv import load_dotenv
 from pathlib import Path
+import json
 
 # Load environment variables from .env file
 load_dotenv()
@@ -33,6 +34,7 @@ def analyze_selfie():
         if 'data:image' in image_data:
             image_data = image_data.split('base64,')[1]
         
+        # First get the style analysis
         response = client.chat.completions.create(
             model="gpt-4o",
             max_tokens=1000,
@@ -56,16 +58,21 @@ def analyze_selfie():
                                     "age_range": "estimated age range (e.g., '20-25')",
                                     "gender": "person's apparent gender",
                                     "hair": "hair color",
-                                    "skin": {{"name": "skin tone", "hex": "#hexcode"}} where skin tone is (pale, light, medium, dark)",
-                                    "styles": "list of recommended fashion styles for {occasion} occasion",
+                                    "skin": {{"name": "skin tone", "hex": "#hexcode"}},
+                                    "styles": [
+                                        {{"name": "style name", "description": "brief description for {occasion}", "occasion": "{occasion}"}},
+                                        {{"name": "style name", "description": "brief description for {occasion}", "occasion": "{occasion}"}},
+                                        {{"name": "style name", "description": "brief description for {occasion}", "occasion": "{occasion}"}},
+                                        {{"name": "style name", "description": "brief description for {occasion}", "occasion": "{occasion}"}},
+                                        {{"name": "style name", "description": "brief description for {occasion}", "occasion": "{occasion}"}},
+                                    ],
                                     "colors": [
                                         {{"name": "color name", "hex": "#hexcode"}},
                                         {{"name": "color name", "hex": "#hexcode"}},
                                         {{"name": "color name", "hex": "#hexcode"}},
                                         {{"name": "color name", "hex": "#hexcode"}},
                                         {{"name": "color name", "hex": "#hexcode"}}
-                                    ],
-                                    "combination": "combination of clothing that would be best for this person for {occasion}"
+                                    ]
                                 }}"""
                         },
                         {
@@ -80,7 +87,23 @@ def analyze_selfie():
             response_format={ "type": "json_object" }
         )
         
-        result = response.choices[0].message.content
+        result = json.loads(response.choices[0].message.content)
+        print("API Response:", result)
+        # Generate images for each style
+        if 'styles' in result:
+            for style in result['styles']:
+                try:
+                    image_response = client.images.generate(
+                        model="dall-e-3",
+                        prompt=f"Fashion photograph of {style['description']} style outfit for {style['occasion']} occasion for a {result['gender']} {result['age_range']} year old. Full outfit on plain background, no human face.",
+                        size="1024x1024",
+                        quality="standard",
+                        n=1,
+                    )
+                    style['image_url'] = image_response.data[0].url
+                except Exception as img_error:
+                    style['image_url'] = None
+                    print(f"Error generating image: {str(img_error)}")
         print("API Response:", result)
         return jsonify({"success": True, "result": result})
         

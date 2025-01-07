@@ -102,53 +102,68 @@ async function analyzeImage() {
         const data = await response.json();
         
         if (data.success) {
-            try {
-                const result = JSON.parse(data.result);
+            // Log the raw result for debugging
+            console.log('Raw API response:', data);
+            
+            // The result is already parsed JSON, no need to parse again
+            const result = data.result;
 
-                if (result.error) {
-                    resultsDiv.innerHTML = `<p class="error">${result.error}</p>`;
-                } else {
-                    const skinTone = result.skin.name;
-                    const skinSwatch = result.skin.hex;
-                    const colorSwatches = result.colors.map(color => 
-                        `<div class="color-swatch" style="display: inline-block; margin: 10px;">
-                            <div style="text-align: center;">
-                                <div class="color-preview" style="background-color: ${color.hex}; width: 100px; height: 30px; margin-bottom: 5px; border-radius: 4px;"></div>
-                                <span class="color-name" style="display: block;">${color.name}</span>
-                            </div>
-                        </div>`
-                    ).join('');
+            if (result.error) {
+                resultsDiv.innerHTML = `<p class="error">${result.error}</p>`;
+            } else {
+                const skinTone = result.skin.name;
+                const skinSwatch = result.skin.hex;
+                const colorSwatches = result.colors.map(color => 
+                    `<div class="color-swatch" style="display: inline-block; margin: 10px;">
+                        <div style="text-align: center;">
+                            <div class="color-preview" style="background-color: ${color.hex}; width: 100px; height: 30px; margin-bottom: 5px; border-radius: 4px;"></div>
+                            <span class="color-name" style="display: block;">${color.name}</span>
+                        </div>
+                    </div>`
+                ).join('');
 
-                    resultsDiv.innerHTML = `
-                        <h3>Style Analysis:</h3>
-                        <div class="analysis-details">
-                            <p><strong>Age Range:</strong> ${result.age_range}</p>
-                            <p><strong>Gender:</strong> ${result.gender}</p>
-                            <p><strong>Hair:</strong> ${result.hair}</p>
-                            <p><strong>Skin Tone:</strong> ${skinTone}</p>
-                            <div class="skin-preview" style="background-color: ${skinSwatch}; width: 100px; height: 30px; margin-bottom: 5px; border-radius: 4px;"></div>
+                // Display basic analysis results
+                resultsDiv.innerHTML = `
+                    <h3>Style Analysis:</h3>
+                    <div class="analysis-details">
+                        <p><strong>Age Range:</strong> ${result.age_range}</p>
+                        <p><strong>Gender:</strong> ${result.gender}</p>
+                        <p><strong>Hair:</strong> ${result.hair}</p>
+                        <p><strong>Skin Tone:</strong> ${skinTone}</p>
+                        <div class="skin-preview" style="background-color: ${skinSwatch}; width: 100px; height: 30px; margin-bottom: 5px; border-radius: 4px;"></div>
+                    </div>
+                    <div class="color-palette">
+                        <strong>Color Palette:</strong>
+                        <div class="color-swatches" style="display: flex; flex-wrap: wrap; justify-content: center; gap: 20px; margin-top: 15px;">
+                            ${colorSwatches}
                         </div>
-                        <p><strong>Recommended Styles:</strong> ${result.styles}</p>
-                        <div class="color-palette">
-                            <strong>Color Palette:</strong>
-                            <div class="color-swatches" style="display: flex; flex-wrap: wrap; justify-content: center; gap: 20px; margin-top: 15px;">
-                                ${colorSwatches}
+                    </div>`;
+
+                // Display styles with generated images
+                if (Array.isArray(result.styles)) {
+                    const stylesHtml = result.styles.map(style => `
+                        <div class="style-item">
+                            <h4>${style.name}</h4>
+                            <p>${style.description}</p>
+                            ${style.image_url ? `<img src="${style.image_url}" alt="${style.name}" class="style-image">` : ''}
+                        </div>
+                    `).join('');
+                    
+                    resultsDiv.innerHTML += `
+                        <div class="result-section">
+                            <h3>Recommended Styles for ${occasion}</h3>
+                            <div class="styles-grid">
+                                ${stylesHtml}
                             </div>
                         </div>
-                        <p><strong>Best Combination:</strong> ${result.combination}</p>
                     `;
-                
                 }
-            } catch (parseError) {
-                console.error('Parse Error:', parseError);
-                console.log('Raw result:', data.result);
-                resultsDiv.innerHTML = `<p class="error">Error parsing response: ${parseError.message}</p>`;
             }
         } else {
             resultsDiv.innerHTML = `<p class="error">API Error: ${data.error}</p>`;
         }
     } catch (error) {
-        console.error('Fetch Error:', error);
+        console.error('Error details:', error);
         resultsDiv.innerHTML = `<p class="error">Network Error: ${error.message}</p>`;
     } finally {
         document.getElementById('analyze-btn').disabled = false;
