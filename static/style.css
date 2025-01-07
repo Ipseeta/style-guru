@@ -1,8 +1,23 @@
+:root {
+    --brown-50: #faf6f4;
+    --brown-100: #f3ebe7;
+    --brown-200: #e5d3c9;
+    --brown-300: #d3b4a4;
+    --brown-400: #bc8c73;
+    --brown-500: #a66c4d;
+    --brown-600: #8f4f2d;
+    --brown-700: #7c2d12;  /* Base color */
+    --brown-800: #662718;
+    --brown-900: #4c1d10;
+    --brown-950: #2e120a;
+}
+
 body {
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 20px;
-    background-color: #f5f5f5;
+    background-color: var(--brown-50);
+    color: var(--brown-900);
 }
 
 .container {
@@ -34,22 +49,27 @@ video, #captured-image {
 }
 
 .primary-btn {
-    background-color: #1a73e8;
+    background-color: var(--brown-700);
     color: white;
     padding: 12px 24px;
     border: none;
-    border-radius: 4px;
+    border-radius: 8px;
     font-size: 16px;
     cursor: pointer;
     transition: background-color 0.3s;
 }
 
 .primary-btn:hover {
-    background-color: #1557b0;
+    background-color: var(--brown-800);
+}
+
+.primary-btn:disabled {
+    background-color: var(--brown-300);
+    cursor: not-allowed;
 }
 
 .separator {
-    color: #666;
+    color: var(--brown-600);
     font-size: 16px;
     align-self: center;
 }
@@ -60,7 +80,7 @@ video, #captured-image {
 
 .file-upload input[type="file"] {
     padding: 8px;
-    border: 2px solid #ddd;
+    border: 2px solid var(--brown-300);
     border-radius: 4px;
     cursor: pointer;
 }
@@ -171,4 +191,57 @@ h1 {
 .style-item p {
     margin: 0 0 15px 0;
     color: #666;
+}
+
+#capture-btn {
+    background-color: var(--brown-700);
+    /* ... rest of capture button styles ... */
+}
+
+#capture-btn:hover {
+    background-color: var(--brown-800);
+}
+
+#occasion-select {
+    border: 2px solid var(--brown-200);
+    color: var(--brown-700);
+}
+
+#occasion-select:focus {
+    border-color: var(--brown-400);
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(124, 45, 18, 0.1);
+}
+
+.loading-indicator {
+    color: var(--brown-600);
+    background-color: var(--brown-50);
+}
+
+.error {
+    color: #ef4444;
+    background-color: #fee2e2;
+}
+
+/* Update any hover effects or focus states */
+.primary-btn:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px var(--brown-100), 0 0 0 4px var(--brown-500);
+}
+
+/* File input styling */
+input[type="file"] {
+    border-color: var(--brown-300);
+}
+
+/* Analysis results sections */
+.analysis-details,
+.color-palette,
+.combination-section {
+    border: 1px solid var(--brown-200);
+}
+
+.analysis-details h3,
+.combination-section h3 {
+    color: var(--brown-700);
 }

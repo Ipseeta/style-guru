@@ -37,7 +37,7 @@ def analyze_selfie():
         # First get the style analysis
         response = client.chat.completions.create(
             model="gpt-4o",
-            max_tokens=1000,
+            max_tokens=500,
             messages=[
                 {
                     "role": "system",
