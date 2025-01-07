@@ -111,6 +111,8 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 - OpenAI for GPT-4 Vision and DALL-E 3 APIs
 - Flask team for the web framework
+- Tailwind CSS for color system inspiration
+- Google Fonts for Playfair Display font
 
 ---
 Made with ❤️ by Ipseeta
