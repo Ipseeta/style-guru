@@ -62,9 +62,6 @@ def analyze_selfie():
                                     "styles": [
                                         {{"name": "style name", "description": "brief description for {occasion}", "occasion": "{occasion}"}},
                                         {{"name": "style name", "description": "brief description for {occasion}", "occasion": "{occasion}"}},
-                                        {{"name": "style name", "description": "brief description for {occasion}", "occasion": "{occasion}"}},
-                                        {{"name": "style name", "description": "brief description for {occasion}", "occasion": "{occasion}"}},
-                                        {{"name": "style name", "description": "brief description for {occasion}", "occasion": "{occasion}"}},
                                     ],
                                     "colors": [
                                         {{"name": "color name", "hex": "#hexcode"}},
