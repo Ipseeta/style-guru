@@ -60,8 +60,7 @@ def analyze_selfie():
                                     "hair": "hair color",
                                     "skin": {{"name": "skin tone", "hex": "#hexcode"}},
                                     "styles": [
-                                        {{"name": "style name", "description": "brief description for {occasion}", "occasion": "{occasion}"}},
-                                        {{"name": "style name", "description": "brief description for {occasion}", "occasion": "{occasion}"}},
+                                        {{"name": "style name", "description": "brief description for {occasion}", "occasion": "{occasion}"}}
                                     ],
                                     "colors": [
                                         {{"name": "color name", "hex": "#hexcode"}},
