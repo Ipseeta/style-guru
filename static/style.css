@@ -284,3 +284,34 @@ input[type="file"] {
         font-size: 1.75rem;
     }
 }
+
+.error-container {
+    background-color: var(--brown-50);
+    border: 1px solid var(--brown-200);
+    border-radius: 8px;
+    padding: 20px;
+    text-align: center;
+    margin: 20px 0;
+}
+
+.error-message {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    margin-bottom: 20px;
+    color: var(--brown-700);
+}
+
+.error-message svg {
+    color: var(--brown-600);
+}
+
+.error-message p {
+    margin: 0;
+    font-size: 1.1rem;
+}
+
+.error-container .primary-btn {
+    margin-top: 15px;
+}

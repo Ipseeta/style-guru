@@ -5,6 +5,8 @@ import os
 from dotenv import load_dotenv
 from pathlib import Path
 import json
+import asyncio
+from concurrent.futures import ThreadPoolExecutor
 
 # Load environment variables from .env file
 load_dotenv()
@@ -26,15 +28,12 @@ def home():
 @app.route('/analyze', methods=['POST'])
 def analyze_selfie():
     try:
-        # Get the image data and occasion from the request
-        image_data = request.json['image']
-        occasion = request.json.get('occasion', '')
+        # Get data from request
+        data = request.get_json()
+        image_data = data['image'].split(',')[1]
+        occasion = data['occasion']
         
-        # Properly handle the base64 image data
-        if 'data:image' in image_data:
-            image_data = image_data.split('base64,')[1]
-        
-        # First get the style analysis
+        # Get initial analysis without images
         response = client.chat.completions.create(
             model="gpt-4o",
             max_tokens=500,
@@ -42,7 +41,7 @@ def analyze_selfie():
                 {
                     "role": "system",
                     "content": """You are a precise style and fashion analyzer. Analyze the image and return your response in JSON format only.
-                    When suggesting colors, include their hex codes."""
+                        When suggesting colors, include their hex codes."""
                 },
                 {
                     "role": "user",
@@ -55,6 +54,7 @@ def analyze_selfie():
 
                                 For valid selfies:
                                 {{
+                                    "compliment": "compliment for the person",
                                     "age_range": "estimated age range (e.g., '20-25')",
                                     "gender": "person's apparent gender",
                                     "hair": "hair color",
@@ -89,27 +89,98 @@ def analyze_selfie():
         
         result = json.loads(response.choices[0].message.content)
         print("API Response:", result)
-        # Generate images for each style
-        if 'styles' in result:
-            for style in result['styles']:
+        return jsonify({
+            "success": True,
+            "result": result,
+            "message": "Analysis complete. Loading style images...",
+            "phase": "analysis_complete",
+            "needsImageGeneration": True
+        })
+
+            
+    except Exception as e:
+        print(f"General Error: {str(e)}")
+        return jsonify({
+            "success": False,
+            "error": f"Server Error: {str(e)}"
+        })
+@app.route('/generate-images', methods=['POST'])
+def generate_images():
+    try:
+        data = request.get_json()
+        styles = data['styles']
+        occasion = data['occasion']
+        gender = data['gender']
+        age_range = data['age_range']
+        
+        # Create a thread pool for parallel processing
+        with ThreadPoolExecutor(max_workers=3) as executor:
+            # Map each style to a future task
+            future_to_style = {
+                executor.submit(
+                    generate_single_image, 
+                    style, 
+                    occasion,
+                    gender,
+                    age_range
+                ): style['name'] 
+                for style in styles
+            }
+            
+            generated_images = []
+            
+            # Process completed images as they finish
+            for future in future_to_style:
+                style_name = future_to_style[future]
                 try:
-                    image_response = client.images.generate(
-                        model="dall-e-3",
-                        prompt=f"Fashion photograph of {style['description']} style outfit for {style['occasion']} occasion for a {result['gender']} {result['age_range']} year old. Full outfit on plain background, no human face.",
-                        size="1024x1024",
-                        quality="standard",
-                        n=1,
-                    )
-                    style['image_url'] = image_response.data[0].url
-                except Exception as img_error:
-                    style['image_url'] = None
-                    print(f"Error generating image: {str(img_error)}")
-        print("API Response:", result)
-        return jsonify({"success": True, "result": result})
+                    image_url = future.result()
+                    generated_images.append({
+                        "style_name": style_name,
+                        "image_url": image_url
+                    })
+                except Exception as e:
+                    print(f"Error generating image for {style_name}: {str(e)}")
+                    generated_images.append({
+                        "style_name": style_name,
+                        "error": str(e)
+                    })
+        
+        return jsonify({
+            "success": True,
+            "images": generated_images
+        })
         
     except Exception as e:
-        print("Error:", str(e))
-        return jsonify({"success": False, "error": str(e)})
+        return jsonify({
+            "success": False,
+            "error": str(e)
+        })
+
+def generate_single_image(style, occasion, gender, age_range):
+    prompt = f"""Create a fashion outfit photo for {occasion} occasion.
+    Style description: {style['description']} for {gender} and age range between {age_range}
+    
+    Requirements:
+    - Professional fashion photography style
+    - Clean white or light gray background
+    - Full outfit displayed on invisible mannequin
+    - High-quality, detailed clothing
+    - No human faces or models
+    - Focus on the outfit combination
+    - Show accessories if mentioned
+    - Ensure all items are clearly visible
+    - Professional studio lighting
+    - Sharp, clear details of fabrics and textures"""
+
+    image_response = client.images.generate(
+        model="dall-e-3",
+        prompt=prompt,
+        size="1024x1024",
+        quality="standard",
+        n=1,
+    )
+    
+    return image_response.data[0].url
 
 if __name__ == '__main__':
     app.run(debug=True)
