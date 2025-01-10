@@ -1,6 +1,6 @@
 from flask import Flask, request, jsonify, render_template
 import base64
-from openai import OpenAI
+from openai import AzureOpenAI, OpenAI
 import os
 from dotenv import load_dotenv
 from pathlib import Path
@@ -20,6 +20,12 @@ app = Flask(__name__,
             static_folder=str(current_dir / 'static'))
 
 client = OpenAI(api_key=os.environ.get('OPENAI_API_KEY'))
+
+azure_client = AzureOpenAI(
+    api_key=os.environ.get('AZURE_OPENAI_API_KEY'),  
+    api_version="2024-02-01" ,
+    azure_endpoint=os.environ.get('AZURE_OPENAI_ENDPOINT')
+)
 
 @app.route('/')
 def home():
@@ -54,12 +60,16 @@ def analyze_selfie():
 
                                 For valid selfies:
                                 {{
-                                    "compliment": "compliment for the person",
+                                    "compliment": "compliment for the person in two sentences.",
                                     "age_range": "estimated age range (e.g., '20-25')",
                                     "gender": "person's apparent gender",
                                     "hair": "hair color",
                                     "skin": {{"name": "skin tone", "hex": "#hexcode"}},
                                     "styles": [
+                                        {{"name": "style name", "description": "brief description for {occasion}", "occasion": "{occasion}"}},
+                                        {{"name": "style name", "description": "brief description for {occasion}", "occasion": "{occasion}"}},
+                                        {{"name": "style name", "description": "brief description for {occasion}", "occasion": "{occasion}"}},
+                                        {{"name": "style name", "description": "brief description for {occasion}", "occasion": "{occasion}"}},
                                         {{"name": "style name", "description": "brief description for {occasion}", "occasion": "{occasion}"}}
                                     ],
                                     "colors": [
@@ -166,9 +176,10 @@ def generate_single_image(style, occasion, gender, age_range):
     - Show accessories if mentioned
     - Ensure all items are clearly visible
     - Professional studio lighting
+    - Strictly follow the style description and occasion
     - Sharp, clear details of fabrics and textures"""
 
-    image_response = client.images.generate(
+    image_response = azure_client.images.generate(
         model="dall-e-3",
         prompt=prompt,
         size="1024x1024",
