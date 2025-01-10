@@ -76,6 +76,7 @@ document.getElementById('file-upload').addEventListener('change', (e) => {
 async function analyzeImage() {
     const capturedImage = document.getElementById('captured-image');
     const occasion = document.getElementById('occasion-select').value;
+    const attire = document.getElementById('attire-select').value;
     const resultsDiv = document.getElementById('results');
     const analyzeBtn = document.getElementById('analyze-btn');
     
@@ -98,7 +99,8 @@ async function analyzeImage() {
             },
             body: JSON.stringify({
                 image: capturedImage.src,
-                occasion: occasion
+                occasion: occasion,
+                attire: attire
             })
         });
 
@@ -118,6 +120,7 @@ async function analyzeImage() {
                     },
                     body: JSON.stringify({
                         occasion: occasion,
+                        attire: attire,
                         styles: data.result.styles,
                         gender: data.result.gender,
                         age_range: data.result.age_range,
@@ -289,4 +292,126 @@ function updateStyleImage(imageData) {
             `;
         }
     }
+}
+
+// Add this function to check if an image is selected
+function updateAnalyzeButton() {
+    const capturedImage = document.getElementById('captured-image');
+    const analyzeBtn = document.getElementById('analyze-btn');
+    const occasionSelect = document.getElementById('occasion-select');
+    const attireSelect = document.getElementById('attire-select');
+    
+    // More strict image presence check
+    const hasValidImage = capturedImage && 
+                         capturedImage.src && 
+                         capturedImage.src !== '' &&
+                         capturedImage.src !== 'data:,' &&
+                         !capturedImage.src.endsWith('#') && 
+                         !capturedImage.src.endsWith('undefined') &&
+                         capturedImage.src !== window.location.href &&
+                         capturedImage.complete &&  // Check if image is loaded
+                         capturedImage.naturalWidth > 0;  // Check if image has content
+    
+    // Disable button if no valid image
+    if (!hasValidImage) {
+        analyzeBtn.disabled = true;
+        analyzeBtn.classList.add('disabled');
+        return;
+    }
+    
+    // Enable button only if valid image and both dropdowns have values
+    const hasSelections = occasionSelect.value && attireSelect.value;
+    analyzeBtn.disabled = !hasSelections;
+    analyzeBtn.classList.toggle('disabled', !hasSelections);
+}
+
+// Update file input handler
+function handleFileSelect(event) {
+    const file = event.target.files[0];
+    if (file) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            const capturedImage = document.getElementById('captured-image');
+            capturedImage.src = e.target.result;
+            
+            // Show preview and hide video
+            document.getElementById('video-container').classList.add('hidden');
+            document.getElementById('preview-container').classList.remove('hidden');
+            
+            // Wait for image to load before updating button
+            capturedImage.onload = function() {
+                updateAnalyzeButton();
+            };
+        };
+        reader.readAsDataURL(file);
+    }
+}
+
+// Update capture function
+function capture() {
+    const video = document.getElementById('video');
+    const canvas = document.createElement('canvas');
+    canvas.width = video.videoWidth;
+    canvas.height = video.videoHeight;
+    canvas.getContext('2d').drawImage(video, 0, 0);
+    
+    const capturedImage = document.getElementById('captured-image');
+    capturedImage.src = canvas.toDataURL('image/jpeg');
+    
+    // Show preview and hide video
+    document.getElementById('video-container').classList.add('hidden');
+    document.getElementById('preview-container').classList.remove('hidden');
+    
+    // Wait for image to load before updating button
+    capturedImage.onload = function() {
+        updateAnalyzeButton();
+    };
+}
+
+// Move initialization into a function
+function initializeApp() {
+    // Check if elements exist before adding listeners
+    const fileInput = document.getElementById('file-input');
+    const occasionSelect = document.getElementById('occasion-select');
+    const attireSelect = document.getElementById('attire-select');
+    const capturedImage = document.getElementById('captured-image');
+    const analyzeBtn = document.getElementById('analyze-btn');
+    
+    if (fileInput) {
+        fileInput.addEventListener('change', handleFileSelect);
+    }
+    
+    if (occasionSelect) {
+        occasionSelect.addEventListener('change', updateAnalyzeButton);
+    }
+    
+    if (attireSelect) {
+        attireSelect.addEventListener('change', updateAnalyzeButton);
+    }
+    
+    if (capturedImage) {
+        capturedImage.addEventListener('load', updateAnalyzeButton);
+    }
+    
+    // Initial button state
+    updateAnalyzeButton();
+}
+
+// Wait for DOM to be fully loaded
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initializeApp);
+} else {
+    initializeApp();
+}
+
+// Add reset function
+function resetAnalysis() {
+    const capturedImage = document.getElementById('captured-image');
+    capturedImage.src = '';  // Clear the image
+    updateAnalyzeButton();   // Update button state
+    
+    // Reset other elements as needed
+    document.getElementById('results').innerHTML = '';
+    document.getElementById('preview-container').classList.add('hidden');
+    document.getElementById('video-container').classList.remove('hidden');
 }

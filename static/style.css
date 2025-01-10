@@ -315,3 +315,72 @@ input[type="file"] {
 .error-container .primary-btn {
     margin-top: 15px;
 }
+
+.occasion-dropdown {
+    width: 200px;  /* Fixed width */
+    padding: 8px 12px;  /* Reduced padding */
+    border: 2px solid var(--brown-200);
+    border-radius: 8px;
+    background-color: white;
+    color: var(--brown-700);
+    font-size: 0.95rem;  /* Slightly smaller font */
+    cursor: pointer;
+    outline: none;
+    transition: all 0.3s ease;
+}
+
+.occasion-dropdown:hover {
+    border-color: var(--brown-300);
+}
+
+.occasion-dropdown:focus {
+    border-color: var(--brown-400);
+    box-shadow: 0 0 0 3px rgba(124, 45, 18, 0.1);
+}
+
+.occasion-dropdown optgroup {
+    font-weight: 600;
+    color: var(--brown-600);
+    background-color: var(--brown-50);
+    padding: 6px;  /* Reduced padding */
+}
+
+.occasion-dropdown option {
+    padding: 6px;  /* Reduced padding */
+    background-color: white;
+    color: var(--brown-700);
+}
+
+.occasion-dropdown option:hover {
+    background-color: var(--brown-50);
+}
+
+/* For Webkit browsers like Chrome/Safari */
+.occasion-dropdown::-webkit-scrollbar {
+    width: 8px;
+}
+
+.occasion-dropdown::-webkit-scrollbar-track {
+    background: var(--brown-50);
+    border-radius: 4px;
+}
+
+.occasion-dropdown::-webkit-scrollbar-thumb {
+    background: var(--brown-300);
+    border-radius: 4px;
+}
+
+.occasion-dropdown::-webkit-scrollbar-thumb:hover {
+    background: var(--brown-400);
+}
+
+.primary-btn.disabled {
+    background-color: var(--brown-200);
+    cursor: not-allowed;
+    opacity: 0.7;
+}
+
+.primary-btn.disabled:hover {
+    background-color: var(--brown-200);
+    transform: none;
+}

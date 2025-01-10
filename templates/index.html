@@ -47,12 +47,69 @@
                 <img id="captured-image" alt="Captured photo">
             </div>
 
-            <select id="occasion-select">
-                <option value="">Select Occasion</option>
-                <option value="Casual">Casual</option>
-                <option value="Formal">Formal</option>
-                <option value="Date">Date</option>
-                <option value="Party">Party</option>
+            <select id="occasion-select" class="occasion-dropdown">
+                <optgroup label="Everyday">
+                    <option value="Casual">Casual</option>
+                    <option value="Smart Casual">Smart Casual</option>
+                    <option value="Business Casual">Business Casual</option>
+                </optgroup>
+                
+                <optgroup label="Professional">
+                    <option value="Formal">Formal</option>
+                    <option value="Business">Business</option>
+                    <option value="Interview">Interview</option>
+                </optgroup>
+                
+                <optgroup label="Social">
+                    <option value="Date">Date</option>
+                    <option value="Party">Party</option>
+                    <option value="Cocktail">Cocktail</option>
+                    <option value="Wedding Guest">Wedding Guest</option>
+                </optgroup>
+                
+                <optgroup label="Seasonal">
+                    <option value="Beach">Beach</option>
+                    <option value="Vacation">Vacation</option>
+                    <option value="Winter">Winter</option>
+                    <option value="Summer">Summer</option>
+                </optgroup>
+                
+                <optgroup label="Special">
+                    <option value="Brunch">Brunch</option>
+                    <option value="Dinner">Dinner</option>
+                    <option value="Concert">Concert</option>
+                    <option value="Festival">Festival</option>
+                </optgroup>
+            </select>
+
+            <select id="attire-select" class="occasion-dropdown">
+                <optgroup label="Traditional">
+                    <option value="Western">Western</option>
+                    <option value="Indian">Indian</option>
+                    <option value="Chinese">Chinese</option>
+                    <option value="Japanese">Japanese</option>
+                    <option value="Korean">Korean</option>
+                </optgroup>
+                
+                <optgroup label="Fusion">
+                    <option value="Indo-Western">Indo-Western</option>
+                    <option value="Asian Fusion">Asian Fusion</option>
+                    <option value="Modern Ethnic">Modern Ethnic</option>
+                </optgroup>
+                
+                <optgroup label="Regional">
+                    <option value="Middle Eastern">Middle Eastern</option>
+                    <option value="African">African</option>
+                    <option value="Latin American">Latin American</option>
+                    <option value="Mediterranean">Mediterranean</option>
+                </optgroup>
+                
+                <optgroup label="Contemporary">
+                    <option value="Modern">Modern</option>
+                    <option value="Streetwear">Streetwear</option>
+                    <option value="Minimalist">Minimalist</option>
+                    <option value="Avant-Garde">Avant-Garde</option>
+                </optgroup>
             </select>
 
             <button id="analyze-btn" class="btn primary-btn">Style Me</button>

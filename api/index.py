@@ -38,6 +38,7 @@ def analyze_selfie():
         data = request.get_json()
         image_data = data['image'].split(',')[1]
         occasion = data['occasion']
+        attire = data['attire']
         
         # Get initial analysis without images
         response = client.chat.completions.create(
@@ -66,11 +67,11 @@ def analyze_selfie():
                                     "hair": "hair color",
                                     "skin": {{"name": "skin tone", "hex": "#hexcode"}},
                                     "styles": [
-                                        {{"name": "style name", "description": "brief description for {occasion}", "occasion": "{occasion}"}},
-                                        {{"name": "style name", "description": "brief description for {occasion}", "occasion": "{occasion}"}},
-                                        {{"name": "style name", "description": "brief description for {occasion}", "occasion": "{occasion}"}},
-                                        {{"name": "style name", "description": "brief description for {occasion}", "occasion": "{occasion}"}},
-                                        {{"name": "style name", "description": "brief description for {occasion}", "occasion": "{occasion}"}}
+                                        {{"name": "style name", "description": "brief description for {occasion}", "occasion": "{occasion}", "attire": "{attire}"}},
+                                        {{"name": "style name", "description": "brief description for {occasion}", "occasion": "{occasion}", "attire": "{attire}"}},
+                                        {{"name": "style name", "description": "brief description for {occasion}", "occasion": "{occasion}", "attire": "{attire}"}},
+                                        {{"name": "style name", "description": "brief description for {occasion}", "occasion": "{occasion}", "attire": "{attire}"}},
+                                        {{"name": "style name", "description": "brief description for {occasion}", "occasion": "{occasion}", "attire": "{attire}"}}
                                     ],
                                     "colors": [
                                         {{"name": "color name", "hex": "#hexcode"}},
@@ -93,7 +94,8 @@ def analyze_selfie():
             response_format={ "type": "json_object" }
         )
         
-        result = json.loads(response.choices[0].message.content)
+        content = response.choices[0].message.content
+        result = json.loads(content)
         print("API Response:", result)
         return jsonify({
             "success": True,
@@ -116,6 +118,7 @@ def generate_images():
         data = request.get_json()
         styles = data['styles']
         occasion = data['occasion']
+        attire = data['attire']
         gender = data['gender']
         age_range = data['age_range']
         
@@ -127,6 +130,7 @@ def generate_images():
                     generate_single_image, 
                     style, 
                     occasion,
+                    attire,
                     gender,
                     age_range
                 ): style['name'] 
@@ -162,9 +166,9 @@ def generate_images():
             "error": str(e)
         })
 
-def generate_single_image(style, occasion, gender, age_range):
-    prompt = f"""Create a fashion outfit photo for {occasion} occasion.
-    Style description: {style['description']} for {gender} and age range between {age_range}
+def generate_single_image(style, occasion, attire, gender, age_range):
+    prompt = f"""Create a fashion outfit photo for {occasion} occasion with {attire} attire.
+    Style description: For {gender} and age range between {age_range}, {style['description']}
     
     Requirements:
     - Professional fashion photography style
@@ -176,9 +180,8 @@ def generate_single_image(style, occasion, gender, age_range):
     - Show accessories if mentioned
     - Ensure all items are clearly visible
     - Professional studio lighting
-    - Strictly follow the style description and occasion
+    - Strictly follow the style description, occasion, attire, gender, and age range
     - Sharp, clear details of fabrics and textures"""
-
     image_response = azure_client.images.generate(
         model="dall-e-3",
         prompt=prompt,
