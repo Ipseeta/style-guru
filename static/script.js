@@ -6,6 +6,21 @@ const analyzeBtn = document.getElementById('analyze-btn');
 const capturedImage = document.getElementById('captured-image');
 const loading = document.getElementById('loading');
 const results = document.getElementById('results');
+// Utility function to show error messages
+function showErrorMessage(message) {
+    const resultsDiv = document.getElementById('results');
+    if (resultsDiv) {
+        resultsDiv.innerHTML = `
+            <div class="analysis-details">
+                <div class="error-message">
+                    <p class="error" style="color: var(--primary-600); background-color: var(--primary-100); padding: 1rem; border-radius: 8px; border: 1px solid var(--primary-200); text-align: center; margin: 1rem 0;">
+                        ${message}
+                    </p>
+                </div>
+            </div>`;
+        return;
+    }
+}
 
 async function initCamera() {
     try {
@@ -16,10 +31,18 @@ async function initCamera() {
                 height: { ideal: 720 }
             } 
         });
+        const video = document.getElementById('video');
+        if (!video) throw new Error('Video element not found');
         video.srcObject = stream;
     } catch (err) {
         console.error("Error accessing camera:", err);
-        alert("Error accessing camera. Please make sure you've granted camera permissions.");
+        if (err.name === 'NotAllowedError') {
+            showErrorMessage('Camera access denied. Please enable camera permissions.');
+        } else if (err.name === 'NotFoundError') {
+            showErrorMessage('No camera device found.');
+        } else {
+            showErrorMessage('Error accessing camera: ' + err.message);
+        }
     }
 }
 
@@ -75,13 +98,17 @@ document.getElementById('file-upload').addEventListener('change', (e) => {
 // Modify the analyze function to include occasion
 async function analyzeImage() {
     const capturedImage = document.getElementById('captured-image');
-    const occasion = document.getElementById('occasion-select').value;
-    const attire = document.getElementById('attire-select').value;
+    const occasion = document.getElementById('occasion-select')?.value;
+    const attire = document.getElementById('attire-select')?.value;
     const resultsDiv = document.getElementById('results');
     const analyzeBtn = document.getElementById('analyze-btn');
     
-    if (!occasion) {
-        alert('Please select an occasion');
+    if (!capturedImage?.src) {
+        showErrorMessage('No image captured. Please take or upload a photo.');
+        return;
+    }
+    if (!occasion || !attire) {
+        showErrorMessage('Please select both occasion and attire.');
         return;
     }
 
@@ -103,7 +130,9 @@ async function analyzeImage() {
                 attire: attire
             })
         });
-
+        if (!response.ok) {
+            throw new Error(`Server error: ${response.status}`);
+        }
         const data = await response.json();
 
         if (data.success) {
@@ -170,7 +199,12 @@ initCamera();
 // Add this to your existing JavaScript
 document.getElementById('file-upload').addEventListener('change', function(e) {
     const fileName = e.target.files[0]?.name || '';
-    document.getElementById('file-name').textContent = fileName;
+    const fileNameElement = document.getElementById('file-name');
+    if (fileNameElement) {
+        fileNameElement.textContent = fileName;
+    } else {
+        console.warn('File name element not found in the DOM');
+    }
 });
 
 function displayInitialResults(result) {
@@ -359,21 +393,60 @@ function updateAnalyzeButton() {
 
 // Update file input handler
 function handleFileSelect(event) {
-    const file = event.target.files[0];
+    const file = event.target.files?.[0];
+    if (!file) return;
+    // Define allowed image types
+    const allowedTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
+    if (!allowedTypes.includes(file.type)) {
+        showErrorMessage(`Invalid file type. Please upload an image file (${allowedTypes.map(type => type.split('/')[1]).join(', ')})`);
+        event.target.value = ''; // Clear the file input
+        // Clear any existing preview
+        const capturedImage = document.getElementById('captured-image');
+        if (capturedImage) {
+            capturedImage.src = '';
+        }
+        // Reset file name display
+        const fileNameElement = document.getElementById('file-name');
+        if (fileNameElement) {
+            fileNameElement.textContent = '';
+        }
+        
+        return;
+    }
+
+    const maxSize = 5 * 1024 * 1024; // 5MB
+    if (file.size > maxSize) {
+        showErrorMessage('Image size too large. Please select an image under 5MB.');
+        event.target.value = '';
+        return;
+    }
+
+    const reader = new FileReader();
+    reader.onerror = () => {
+        showErrorMessage('Error reading file. Please try again.');
+        event.target.value = '';
+    };
+
     if (file) {
         const reader = new FileReader();
         reader.onload = function(e) {
-            const capturedImage = document.getElementById('captured-image');
-            capturedImage.src = e.target.result;
-            
+            try {
+                const capturedImage = document.getElementById('captured-image');
+                if (!capturedImage) throw new Error('Image preview element not found');
+                capturedImage.src = e.target.result;
+                
             // Show preview and hide video
             document.getElementById('video-container').classList.add('hidden');
             document.getElementById('preview-container').classList.remove('hidden');
             
             // Wait for image to load before updating button
             capturedImage.onload = function() {
-                updateAnalyzeButton();
-            };
+                    updateAnalyzeButton();
+                };
+            } catch (error) {
+                console.error('File processing error:', error);
+                showErrorMessage('Error processing image. Please try again.');
+            }
         };
         reader.readAsDataURL(file);
     }
@@ -447,3 +520,17 @@ function resetAnalysis() {
     document.getElementById('preview-container').classList.add('hidden');
     document.getElementById('video-container').classList.remove('hidden');
 }
+
+// Add cleanup function
+function cleanup() {
+    try {
+        if (stream) {
+            stream.getTracks().forEach(track => track.stop());
+        }
+    } catch (error) {
+        console.error('Cleanup error:', error);
+    }
+}
+
+// Add event listener for page unload
+window.addEventListener('beforeunload', cleanup);
