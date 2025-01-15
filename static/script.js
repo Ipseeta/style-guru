@@ -152,7 +152,7 @@ async function analyzeImage() {
             resultsDiv.innerHTML = `
                 <div class="analysis-details">
                     <div class="error-message">
-                        <p class="error" style="color: var(--brown-700); background-color: var(--brown-100); padding: 1rem; border-radius: 8px; border: 1px solid var(--brown-200); text-align: center; margin: 1rem 0;">
+                        <p class="error" style="color: var(--primary-600); background-color: var(--primary-100); padding: 1rem; border-radius: 8px; border: 1px solid var(--primary-200); text-align: center; margin: 1rem 0;">
                             ${error}
                         </p>
                     </div>
@@ -180,7 +180,7 @@ function displayInitialResults(result) {
         resultsDiv.innerHTML = `
             <div class="analysis-details">
                 <div class="error-message">
-                    <p class="error" style="color: var(--brown-700); background-color: var(--brown-100); padding: 1rem; border-radius: 8px; border: 1px solid var(--brown-200); text-align: center; margin: 1rem 0;">
+                    <p class="error" style="color: var(--primary-600); background-color: var(--primary-100); padding: 1rem; border-radius: 8px; border: 1px solid var(--primary-200); text-align: center; margin: 1rem 0;">
                         ${result.error}
                     </p>
                 </div>
@@ -191,74 +191,73 @@ function displayInitialResults(result) {
     // Create skin tone swatch
     const skinSwatch = `
         <div class="skin-swatch" style="display: flex; align-items: center; gap: 8px;">
-            <div class="color-preview" style="width: 30px; height: 30px; border-radius: 50%; background-color: ${result.skin.hex}; border: 2px solid var(--brown-200);"></div>
-            <span class="color-name" style="color: var(--brown-700);">${result.skin.name}</span>
+            <div class="color-preview" style="width: 30px; height: 30px; border-radius: 50%; background-color: ${result.skin.hex}; border: 2px solid var(--primary-200);"></div>
+            <span class="color-name" style="color: var(--primary-600);">${result.skin.name}</span>
         </div>`;
 
     resultsDiv.innerHTML = `
-        <div class="analysis-details" style="background: white; border-radius: 12px; padding: 24px; box-shadow: 0 2px 4px rgba(124, 45, 18, 0.1);">
-            <h3 style="color: var(--brown-700); font-size: 1.5rem; margin-bottom: 20px; font-weight: 600;">Style Analysis</h3>
+        <div class="analysis-details" style="background: white; border-radius: 12px; padding: 24px; box-shadow: 0 2px 4px rgba(236, 72, 153, 0.1);">
+            <h3 style="color: var(--primary-600); font-size: 1.5rem; margin-bottom: 20px; font-weight: 600;">Style Analysis</h3>
             
-            <div class="compliment" style="background: var(--brown-50); padding: 16px; border-radius: 8px; margin-bottom: 20px; border: 1px solid var(--brown-100);">
-                <p style="color: var(--brown-700); font-size: 1.1rem; font-style: italic; text-align: center; margin: 0;">
+            <div class="compliment" style="background: var(--primary-50); padding: 16px; border-radius: 8px; margin-bottom: 20px; border: 1px solid var(--primary-100);">
+                <p style="color: var(--primary-600); font-size: 1.1rem; font-style: italic; text-align: center; margin: 0;">
                     ${result.compliment || "You have a unique style that we're excited to enhance!"}
                 </p>
             </div>
 
             <div class="analysis-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px;">
-                <div class="analysis-item" style="background: var(--brown-50); padding: 16px; border-radius: 8px; border: 1px solid var(--brown-100);">
-                    <div class="item-label" style="color: var(--brown-500); font-size: 0.9rem; margin-bottom: 4px;">Age Range</div>
-                    <div class="item-value" style="color: var(--brown-700); font-weight: 500;">${result.age_range}</div>
+                <div class="analysis-item" style="background: var(--primary-50); padding: 16px; border-radius: 8px; border: 1px solid var(--primary-100);">
+                    <div class="item-label" style="color: var(--primary-500); font-size: 0.9rem; margin-bottom: 4px;">Age Range</div>
+                    <div class="item-value" style="color: var(--primary-600); font-weight: 500;">${result.age_range}</div>
+                </div>
+                <div class="analysis-item" style="background: var(--primary-50); padding: 16px; border-radius: 8px; border: 1px solid var(--primary-100);">
+                    <div class="item-label" style="color: var(--primary-500); font-size: 0.9rem; margin-bottom: 4px;">Age Range</div>
+                    <div class="item-value" style="color: var(--primary-600); font-weight: 500;">${result.gender}</div>
                 </div>
 
-                <div class="analysis-item" style="background: var(--brown-50); padding: 16px; border-radius: 8px; border: 1px solid var(--brown-100);">
-                    <div class="item-label" style="color: var(--brown-500); font-size: 0.9rem; margin-bottom: 4px;">Gender</div>
-                    <div class="item-value" style="color: var(--brown-700); font-weight: 500;">${result.gender}</div>
+                <div class="analysis-item" style="background: var(--primary-50); padding: 16px; border-radius: 8px; border: 1px solid var(--primary-100);">
+                    <div class="item-label" style="color: var(--primary-500); font-size: 0.9rem; margin-bottom: 4px;">Age Range</div>
+                    <div class="item-value" style="color: var(--primary-600); font-weight: 500;">${result.hair}</div>
                 </div>
 
-                <div class="analysis-item" style="background: var(--brown-50); padding: 16px; border-radius: 8px; border: 1px solid var(--brown-100);">
-                    <div class="item-label" style="color: var(--brown-500); font-size: 0.9rem; margin-bottom: 4px;">Hair</div>
-                    <div class="item-value" style="color: var(--brown-700); font-weight: 500;">${result.hair}</div>
-                </div>
-
-                <div class="analysis-item" style="background: var(--brown-50); padding: 16px; border-radius: 8px; border: 1px solid var(--brown-100);">
-                    <div class="item-label" style="color: var(--brown-500); font-size: 0.9rem; margin-bottom: 4px;">Skin Tone</div>
+                <div class="analysis-item" style="background: var(--primary-50); padding: 16px; border-radius: 8px; border: 1px solid var(--primary-100);">
+                    <div class="item-label" style="color: var(--primary-500); font-size: 0.9rem; margin-bottom: 4px;">Skin Tone</div>
                     <div class="item-value" style="display: flex; align-items: center; gap: 8px; margin-top: 4px;">
                         ${skinSwatch}
                     </div>
                 </div>
             </div>
             <!-- Add Hair Suggestions Section -->
-            <div class="hair-suggestions" style="margin-top: 20px; padding-top: 20px; border-top: 1px solid var(--brown-100);">
-                <h4 style="color: var(--brown-700); font-size: 1.2rem; margin-bottom: 16px;">Hair Recommendations</h4>
+            <div class="hair-suggestions" style="margin-top: 20px; padding-top: 20px; border-top: 1px solid var(--primary-100);">
+                <h4 style="color: var(--primary-600); font-size: 1.2rem; margin-bottom: 16px;">Hair Recommendations</h4>
                 
                 <div class="hair-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px;">
-                    <div class="hair-item" style="background: var(--brown-50); padding: 16px; border-radius: 8px; border: 1px solid var(--brown-100);">
-                        <div class="item-label" style="color: var(--brown-500); font-size: 0.9rem; margin-bottom: 4px;">Current Hair</div>
-                        <div class="item-value" style="color: var(--brown-700);">${result.hair_suggestions.current_hair}</div>
+                    <div class="hair-item" style="background: var(--primary-50); padding: 16px; border-radius: 8px; border: 1px solid var(--primary-100);">
+                        <div class="item-label" style="color: var(--primary-500); font-size: 0.9rem; margin-bottom: 4px;">Current Hair</div>
+                        <div class="item-value" style="color: var(--primary-600);">${result.hair_suggestions.current_hair}</div>
                     </div>
 
-                    <div class="hair-item" style="background: var(--brown-50); padding: 16px; border-radius: 8px; border: 1px solid var(--brown-100);">
-                        <div class="item-label" style="color: var(--brown-500); font-size: 0.9rem; margin-bottom: 4px;">Face Shape</div>
-                        <div class="item-value" style="color: var(--brown-700);">${result.hair_suggestions.face_shape_comment}</div>
+                    <div class="hair-item" style="background: var(--primary-50); padding: 16px; border-radius: 8px; border: 1px solid var(--primary-100);">
+                        <div class="item-label" style="color: var(--primary-500); font-size: 0.9rem; margin-bottom: 4px;">Face Shape</div>
+                        <div class="item-value" style="color: var(--primary-600);">${result.hair_suggestions.face_shape_comment}</div>
                     </div>
                 </div>
 
                 <div class="recommendations" style="margin-top: 16px;">
-                    <div class="rec-section" style="background: var(--brown-50); padding: 16px; border-radius: 8px; border: 1px solid var(--brown-100); margin-bottom: 12px;">
-                        <div class="section-label" style="color: var(--brown-700); font-size: 0.9rem; margin-bottom: 8px;">Recommended Lengths</div>
+                    <div class="rec-section" style="background: var(--primary-50); padding: 16px; border-radius: 8px; border: 1px solid var(--primary-100); margin-bottom: 12px;">
+                        <div class="section-label" style="color: var(--primary-500); font-size: 0.9rem; margin-bottom: 8px;">Recommended Lengths</div>
                         <ul style="list-style: none; margin: 0; padding: 0;">
                             ${result.hair_suggestions.recommended_hair_lengths.map(length => 
-                                `<li style="color: var(--brown-700); margin-bottom: 4px;">• ${length}</li>`
+                                `<li style="color: var(--primary-600); margin-bottom: 4px;">• ${length}</li>`
                             ).join('')}
                         </ul>
                     </div>
 
-                    <div class="rec-section" style="background: var(--brown-50); padding: 16px; border-radius: 8px; border: 1px solid var(--brown-100);">
-                        <div class="section-label" style="color: var(--brown-500); font-size: 0.9rem; margin-bottom: 8px;">Recommended Styles</div>
+                    <div class="rec-section" style="background: var(--primary-50); padding: 16px; border-radius: 8px; border: 1px solid var(--primary-100);">
+                        <div class="section-label" style="color: var(--primary-500); font-size: 0.9rem; margin-bottom: 8px;">Recommended Styles</div>
                         <ul style="list-style: none; margin: 0; padding: 0;">
                             ${result.hair_suggestions.recommended_hair_styles.map(style => 
-                                `<li style="color: var(--brown-700); margin-bottom: 4px;">• ${style}</li>`
+                                `<li style="color: var(--primary-600); margin-bottom: 4px;">• ${style}</li>`
                             ).join('')}
                         </ul>
                     </div>
@@ -275,14 +274,14 @@ function displayInitialResults(result) {
 function renderColorPalette(colors) {
     const colorSwatches = colors.map(color => `
         <div class="color-swatch" style="text-align: center;">
-            <div class="color-preview" style="width: 50px; height: 50px; border-radius: 8px; background-color: ${color.hex}; margin: 0 auto 8px; border: 2px solid var(--brown-100);"></div>
-            <span class="color-name" style="color: var(--brown-700); font-size: 0.9rem;">${color.name}</span>
+            <div class="color-preview" style="width: 50px; height: 50px; border-radius: 8px; background-color: ${color.hex}; margin: 0 auto 8px; border: 2px solid var(--primary-100);"></div>
+            <span class="color-name" style="color: var(--primary-600); font-size: 0.9rem;">${color.name}</span>
         </div>
     `).join('');
 
     return `
         <div class="color-palette" style="background: white; border-radius: 12px; padding: 24px; margin-top: 20px; box-shadow: 0 2px 4px rgba(124, 45, 18, 0.1);">
-            <h3 style="color: var(--brown-700); font-size: 1.5rem; margin-bottom: 20px; font-weight: 600;">Recommended Colors</h3>
+            <h3 style="color: var(--primary-600); font-size: 1.5rem; margin-bottom: 20px; font-weight: 600;">Recommended Colors</h3>
             <div class="color-swatches" style="display: flex; gap: 20px; justify-content: center; flex-wrap: wrap;">
                 ${colorSwatches}
             </div>
@@ -295,14 +294,14 @@ function renderColorPalette(colors) {
 function renderStyles(styles) {
     return `
         <div class="styles-section" style="background: white; border-radius: 12px; padding: 24px; margin-top: 20px; box-shadow: 0 2px 4px rgba(124, 45, 18, 0.1);">
-            <h3 style="color: var(--brown-700); font-size: 1.5rem; margin-bottom: 20px; font-weight: 600;">Recommended Styles</h3>
+            <h3 style="color: var(--primary-600); font-size: 1.5rem; margin-bottom: 20px; font-weight: 600;">Recommended Styles</h3>
             <div id="styles-grid" class="styles-grid" style="display: grid; gap: 20px;">
                 ${styles.map(style => `
                     <div class="style-item" id="style-${style.name.replace(/\s+/g, '-')}" 
-                         style="background: var(--brown-50); padding: 20px; border-radius: 8px; border: 1px solid var(--brown-100);">
-                        <h4 style="color: var(--brown-700); font-size: 1.2rem; margin-bottom: 12px; font-weight: 600;">${style.name}</h4>
-                        <p style="color: var(--brown-600); margin-bottom: 16px; line-height: 1.5;">${style.description}</p>
-                        <div class="loading-indicator" style="text-align: center; color: var(--brown-600); padding: 20px;">
+                         style="background: var(--primary-50); padding: 20px; border-radius: 8px; border: 1px solid var(--primary-100);">
+                        <h4 style="color: var(--primary-600); font-size: 1.2rem; margin-bottom: 12px; font-weight: 600;">${style.name}</h4>
+                        <p style="color: var(--primary-600); margin-bottom: 16px; line-height: 1.5;">${style.description}</p>
+                        <div class="loading-indicator" style="text-align: center; color: var(--primary-600); padding: 20px;">
                             Generating style image...
                         </div>
                     </div>

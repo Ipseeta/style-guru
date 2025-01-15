@@ -1,23 +1,23 @@
 :root {
-    --brown-50: #faf6f4;
-    --brown-100: #f3ebe7;
-    --brown-200: #e5d3c9;
-    --brown-300: #d3b4a4;
-    --brown-400: #bc8c73;
-    --brown-500: #a66c4d;
-    --brown-600: #8f4f2d;
-    --brown-700: #7c2d12;  /* Base color */
-    --brown-800: #662718;
-    --brown-900: #4c1d10;
-    --brown-950: #2e120a;
-}
+    --primary-50: rgb(253, 242, 248);
+    --primary-100: rgb(252, 231, 243);
+    --primary-200: rgb(251, 207, 232);
+    --primary-300: rgb(253, 206, 232);
+    --primary-400: rgb(244, 114, 182);
+    --primary-500: rgb(236, 72, 153);
+    --primary-600: rgb(219, 39, 119);
+    --primary-700: rgb(190, 24, 93);
+    --primary-800: rgb(157, 23, 77);
+    --primary-900: rgb(131, 24, 67);
+    --primary-950: rgb(80, 7, 36);
+  }
 
 body {
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 20px;
-    background-color: var(--brown-50);
-    color: var(--brown-900);
+    background-color: var(--primary-50);
+    color: var(--primary-900);
 }
 
 .container {
@@ -49,7 +49,7 @@ video, #captured-image {
 }
 
 .primary-btn {
-    background-color: var(--brown-700);
+    background-color: var(--primary-700);
     color: white;
     padding: 12px 24px;
     border: none;
@@ -60,16 +60,16 @@ video, #captured-image {
 }
 
 .primary-btn:hover {
-    background-color: var(--brown-800);
+    background-color: var(--primary-800);
 }
 
 .primary-btn:disabled {
-    background-color: var(--brown-300);
+    background-color: var(--primary-300);
     cursor: not-allowed;
 }
 
 .separator {
-    color: var(--brown-600);
+    color: var(--primary-600);
     font-size: 16px;
     align-self: center;
 }
@@ -80,7 +80,7 @@ video, #captured-image {
 
 .file-upload input[type="file"] {
     padding: 8px;
-    border: 2px solid var(--brown-300);
+    border: 2px solid var(--primary-300);
     border-radius: 4px;
     cursor: pointer;
 }
@@ -139,7 +139,7 @@ button:disabled {
 }
 
 .site-header {
-    background: linear-gradient(to right, var(--brown-700), var(--brown-800));
+    background: linear-gradient(to right, var(--primary-700), var(--primary-800));
     padding: 1rem;
     text-align: center;
     box-shadow: 0 4px 6px -1px rgba(124, 45, 18, 0.1), 0 2px 4px -1px rgba(124, 45, 18, 0.06);
@@ -161,7 +161,7 @@ button:disabled {
 }
 
 .site-header .tagline {
-    color: var(--brown-100);
+    color: var(--primary-100);
     font-size: 1.125rem;
     font-weight: 500;
     opacity: 0.9;
@@ -177,7 +177,7 @@ button:disabled {
     font-family: 'Playfair Display', serif;
     font-size: 2.5rem;
     margin: 0;
-    background: linear-gradient(135deg, var(--brown-700), var(--brown-900));
+    background: linear-gradient(135deg, var(--primary-700), var(--primary-900));
     -webkit-background-clip: text;
     background-clip: text;
     position: relative;
@@ -186,12 +186,12 @@ button:disabled {
 }
 
 .style-text {
-    color: var(--brown-700);
+    color: var(--primary-700);
     font-weight: 700;
 }
 
 .guru-text {
-    color: var(--brown-900);
+    color: var(--primary-900);
     font-style: italic;
 }
 
@@ -239,28 +239,28 @@ h1 {
 }
 
 #capture-btn {
-    background-color: var(--brown-700);
+    background-color: var(--primary-700);
     /* ... rest of capture button styles ... */
 }
 
 #capture-btn:hover {
-    background-color: var(--brown-800);
+    background-color: var(--primary-800);
 }
 
 #occasion-select {
-    border: 2px solid var(--brown-200);
-    color: var(--brown-700);
+    border: 2px solid var(--primary-200);
+    color: var(--primary-700);
 }
 
 #occasion-select:focus {
-    border-color: var(--brown-400);
+    border-color: var(--primary-400);
     outline: none;
     box-shadow: 0 0 0 2px rgba(124, 45, 18, 0.1);
 }
 
 .loading-indicator {
-    color: var(--brown-600);
-    background-color: var(--brown-50);
+    color: var(--primary-600);
+    background-color: var(--primary-50);
 }
 
 .error {
@@ -271,24 +271,24 @@ h1 {
 /* Update any hover effects or focus states */
 .primary-btn:focus {
     outline: none;
-    box-shadow: 0 0 0 2px var(--brown-100), 0 0 0 4px var(--brown-500);
+    box-shadow: 0 0 0 2px var(--primary-100), 0 0 0 4px var(--primary-500);
 }
 
 /* File input styling */
 input[type="file"] {
-    border-color: var(--brown-300);
+    border-color: var(--primary-300);
 }
 
 /* Analysis results sections */
 .analysis-details,
 .color-palette,
 .combination-section {
-    border: 1px solid var(--brown-200);
+    border: 1px solid var(--primary-200);
 }
 
 .analysis-details h3,
 .combination-section h3 {
-    color: var(--brown-700);
+    color: var(--primary-700);
 }
 
 /* Add this to your HTML head section */
@@ -308,8 +308,8 @@ input[type="file"] {
 }
 
 .error-container {
-    background-color: var(--brown-50);
-    border: 1px solid var(--brown-200);
+    background-color: var(--primary-50);
+    border: 1px solid var(--primary-200);
     border-radius: 8px;
     padding: 20px;
     text-align: center;
@@ -322,11 +322,11 @@ input[type="file"] {
     justify-content: center;
     gap: 12px;
     margin-bottom: 20px;
-    color: var(--brown-700);
+    color: var(--primary-700);
 }
 
 .error-message svg {
-    color: var(--brown-600);
+    color: var(--primary-600);
 }
 
 .error-message p {
@@ -341,10 +341,10 @@ input[type="file"] {
 .occasion-dropdown {
     width: 200px;  /* Fixed width */
     padding: 8px 12px;  /* Reduced padding */
-    border: 2px solid var(--brown-200);
+    border: 2px solid var(--primary-200);
     border-radius: 8px;
     background-color: white;
-    color: var(--brown-700);
+    color: var(--primary-700);
     font-size: 0.95rem;  /* Slightly smaller font */
     cursor: pointer;
     outline: none;
@@ -352,29 +352,29 @@ input[type="file"] {
 }
 
 .occasion-dropdown:hover {
-    border-color: var(--brown-300);
+    border-color: var(--primary-300);
 }
 
 .occasion-dropdown:focus {
-    border-color: var(--brown-400);
+    border-color: var(--primary-400);
     box-shadow: 0 0 0 3px rgba(124, 45, 18, 0.1);
 }
 
 .occasion-dropdown optgroup {
     font-weight: 600;
-    color: var(--brown-600);
-    background-color: var(--brown-50);
+    color: var(--primary-600);
+    background-color: var(--primary-50);
     padding: 6px;  /* Reduced padding */
 }
 
 .occasion-dropdown option {
     padding: 6px;  /* Reduced padding */
     background-color: white;
-    color: var(--brown-700);
+    color: var(--primary-700);
 }
 
 .occasion-dropdown option:hover {
-    background-color: var(--brown-50);
+    background-color: var(--primary-50);
 }
 
 /* For Webkit browsers like Chrome/Safari */
@@ -383,27 +383,27 @@ input[type="file"] {
 }
 
 .occasion-dropdown::-webkit-scrollbar-track {
-    background: var(--brown-50);
+    background: var(--primary-50);
     border-radius: 4px;
 }
 
 .occasion-dropdown::-webkit-scrollbar-thumb {
-    background: var(--brown-300);
+    background: var(--primary-300);
     border-radius: 4px;
 }
 
 .occasion-dropdown::-webkit-scrollbar-thumb:hover {
-    background: var(--brown-400);
+    background: var(--primary-400);
 }
 
 .primary-btn.disabled {
-    background-color: var(--brown-200);
+    background-color: var(--primary-200);
     cursor: not-allowed;
     opacity: 0.7;
 }
 
 .primary-btn.disabled:hover {
-    background-color: var(--brown-200);
+    background-color: var(--primary-200);
     transform: none;
 }
 
