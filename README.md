@@ -1,4 +1,4 @@
-# Style Guru 👔👗
+# Style Genius 👔👗
 
 An AI-powered fashion recommendation system that provides personalized style suggestions based on your selfie and chosen occasion.
 
