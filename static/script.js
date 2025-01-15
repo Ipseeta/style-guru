@@ -208,17 +208,17 @@ function displayInitialResults(result) {
             <div class="analysis-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px;">
                 <div class="analysis-item" style="background: var(--brown-50); padding: 16px; border-radius: 8px; border: 1px solid var(--brown-100);">
                     <div class="item-label" style="color: var(--brown-500); font-size: 0.9rem; margin-bottom: 4px;">Age Range</div>
-                    <div class="item-value" style="color: var(--brown-900); font-weight: 500;">${result.age_range}</div>
+                    <div class="item-value" style="color: var(--brown-700); font-weight: 500;">${result.age_range}</div>
                 </div>
 
                 <div class="analysis-item" style="background: var(--brown-50); padding: 16px; border-radius: 8px; border: 1px solid var(--brown-100);">
                     <div class="item-label" style="color: var(--brown-500); font-size: 0.9rem; margin-bottom: 4px;">Gender</div>
-                    <div class="item-value" style="color: var(--brown-900); font-weight: 500;">${result.gender}</div>
+                    <div class="item-value" style="color: var(--brown-700); font-weight: 500;">${result.gender}</div>
                 </div>
 
                 <div class="analysis-item" style="background: var(--brown-50); padding: 16px; border-radius: 8px; border: 1px solid var(--brown-100);">
                     <div class="item-label" style="color: var(--brown-500); font-size: 0.9rem; margin-bottom: 4px;">Hair</div>
-                    <div class="item-value" style="color: var(--brown-900); font-weight: 500;">${result.hair}</div>
+                    <div class="item-value" style="color: var(--brown-700); font-weight: 500;">${result.hair}</div>
                 </div>
 
                 <div class="analysis-item" style="background: var(--brown-50); padding: 16px; border-radius: 8px; border: 1px solid var(--brown-100);">
@@ -228,9 +228,44 @@ function displayInitialResults(result) {
                     </div>
                 </div>
             </div>
+            <!-- Add Hair Suggestions Section -->
+            <div class="hair-suggestions" style="margin-top: 20px; padding-top: 20px; border-top: 1px solid var(--brown-100);">
+                <h4 style="color: var(--brown-700); font-size: 1.2rem; margin-bottom: 16px;">Hair Recommendations</h4>
+                
+                <div class="hair-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px;">
+                    <div class="hair-item" style="background: var(--brown-50); padding: 16px; border-radius: 8px; border: 1px solid var(--brown-100);">
+                        <div class="item-label" style="color: var(--brown-500); font-size: 0.9rem; margin-bottom: 4px;">Current Hair</div>
+                        <div class="item-value" style="color: var(--brown-700);">${result.hair_suggestions.current_hair}</div>
+                    </div>
+
+                    <div class="hair-item" style="background: var(--brown-50); padding: 16px; border-radius: 8px; border: 1px solid var(--brown-100);">
+                        <div class="item-label" style="color: var(--brown-500); font-size: 0.9rem; margin-bottom: 4px;">Face Shape</div>
+                        <div class="item-value" style="color: var(--brown-700);">${result.hair_suggestions.face_shape_comment}</div>
+                    </div>
+                </div>
+
+                <div class="recommendations" style="margin-top: 16px;">
+                    <div class="rec-section" style="background: var(--brown-50); padding: 16px; border-radius: 8px; border: 1px solid var(--brown-100); margin-bottom: 12px;">
+                        <div class="section-label" style="color: var(--brown-700); font-size: 0.9rem; margin-bottom: 8px;">Recommended Lengths</div>
+                        <ul style="list-style: none; margin: 0; padding: 0;">
+                            ${result.hair_suggestions.recommended_hair_lengths.map(length => 
+                                `<li style="color: var(--brown-700); margin-bottom: 4px;">• ${length}</li>`
+                            ).join('')}
+                        </ul>
+                    </div>
+
+                    <div class="rec-section" style="background: var(--brown-50); padding: 16px; border-radius: 8px; border: 1px solid var(--brown-100);">
+                        <div class="section-label" style="color: var(--brown-500); font-size: 0.9rem; margin-bottom: 8px;">Recommended Styles</div>
+                        <ul style="list-style: none; margin: 0; padding: 0;">
+                            ${result.hair_suggestions.recommended_hair_styles.map(style => 
+                                `<li style="color: var(--brown-700); margin-bottom: 4px;">• ${style}</li>`
+                            ).join('')}
+                        </ul>
+                    </div>
+                </div>
+            </div>
         </div>
 
-        <!-- Rest of your results (color palette, combination section, etc.) -->
         ${renderColorPalette(result.colors)}
         ${renderStyles(result.styles)}
     `;
@@ -276,14 +311,12 @@ function renderStyles(styles) {
         </div>
     `;
 }
-
-// Update the updateStyleImage function to preserve descriptions
+// Update style image
 function updateStyleImage(imageData) {
     const styleElement = document.getElementById(`style-${imageData.style_name.replace(/\s+/g, '-')}`);
     if (styleElement) {
         const loadingIndicator = styleElement.querySelector('.loading-indicator');
         if (loadingIndicator) {
-            // Keep the existing title and description, just replace the loading indicator
             loadingIndicator.outerHTML = `
                 <img src="${imageData.image_url}" 
                      alt="Generated Style" 

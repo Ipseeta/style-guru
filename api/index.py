@@ -79,7 +79,13 @@ def analyze_selfie():
                                         {{"name": "color name", "hex": "#hexcode"}},
                                         {{"name": "color name", "hex": "#hexcode"}},
                                         {{"name": "color name", "hex": "#hexcode"}}
-                                    ]
+                                    ],
+                                    "hair_suggestions": {{
+                                        "current_hair": "current hair details",
+                                        "recommended_hair_lengths": ["length1", "length2", "length3"],
+                                        "recommended_hair_styles": ["style1", "style2", "style3"],
+                                        "face_shape_comment": "comment on the face shape"
+                                    }}
                                 }}"""
                         },
                         {
@@ -95,7 +101,8 @@ def analyze_selfie():
         )
         
         content = response.choices[0].message.content
-        result = json.loads(content)
+        result = json.loads(content)        
+
         print("API Response:", result)
         return jsonify({
             "success": True,
