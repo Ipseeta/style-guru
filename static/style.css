@@ -139,10 +139,32 @@ button:disabled {
 }
 
 .site-header {
-    background-color: white;
-    padding: 20px 0;
-    margin-bottom: 30px;
-    box-shadow: 0 2px 4px rgba(124, 45, 18, 0.1);
+    background: linear-gradient(to right, var(--brown-700), var(--brown-800));
+    padding: 1rem;
+    text-align: center;
+    box-shadow: 0 4px 6px -1px rgba(124, 45, 18, 0.1), 0 2px 4px -1px rgba(124, 45, 18, 0.06);
+    margin-bottom: 2rem;
+}
+
+.header-content {
+    max-width: 36rem;
+    margin: 0 auto;
+}
+
+.site-header h1 {
+    color: white;
+    font-size: 2.25rem;
+    font-weight: 700;
+    letter-spacing: -0.025em;
+    margin-bottom: 0.5rem;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.site-header .tagline {
+    color: var(--brown-100);
+    font-size: 1.125rem;
+    font-weight: 500;
+    opacity: 0.9;
 }
 
 .logo-container {
@@ -383,4 +405,35 @@ input[type="file"] {
 .primary-btn.disabled:hover {
     background-color: var(--brown-200);
     transform: none;
+}
+
+/* Add responsive styles */
+@media (min-width: 640px) {
+    .site-header {
+        padding: 1rem 2rem;
+    }
+
+    .site-header h1 {
+        font-size: 3rem;
+    }
+
+    .site-header .tagline {
+        font-size: 1.25rem;
+    }
+}
+
+/* Optional: Add a subtle animation on page load */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.site-header {
+    animation: fadeIn 0.5s ease-out;
 }
