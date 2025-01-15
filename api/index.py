@@ -1,11 +1,10 @@
 from flask import Flask, request, jsonify, render_template
 import base64
-from openai import AzureOpenAI, OpenAI
+from openai import AzureOpenAI, OpenAI, OpenAIError
 import os
 from dotenv import load_dotenv
 from pathlib import Path
 import json
-import asyncio
 from concurrent.futures import ThreadPoolExecutor
 
 # Load environment variables from .env file
@@ -27,6 +26,20 @@ azure_client = AzureOpenAI(
     azure_endpoint=os.environ.get('AZURE_OPENAI_ENDPOINT')
 )
 
+class APIError(Exception):
+    """Custom exception for API-related errors"""
+    def __init__(self, message, status_code=400):
+        super().__init__(message)
+        self.status_code = status_code
+
+@app.errorhandler(APIError)
+def handle_api_error(error):
+    return jsonify({
+        "success": False,
+        "error": str(error),
+        "status_code": error.status_code
+    }), error.status_code
+
 @app.route('/')
 def home():
     return render_template('index.html')
@@ -34,17 +47,33 @@ def home():
 @app.route('/analyze', methods=['POST'])
 def analyze_selfie():
     try:
+        # Validate request data
+        if not request.is_json:
+            raise APIError("Invalid request format. JSON required.", 400)
         # Get data from request
         data = request.get_json()
-        image_data = data['image'].split(',')[1]
+        # Check required fields
+        required_fields = ['image', 'occasion', 'attire']
+        for field in required_fields:
+            if field not in data:
+                raise APIError(f"Missing required field: {field}", 400)
+        
+        # Validate image data
+        try:
+            image_data = data['image'].split(',')[1]
+             # Try to decode base64 to verify it's valid
+            base64.b64decode(image_data)
+        except Exception:
+            raise APIError("Invalid image data. Please provide a valid base64 encoded image.", 400)
+        
         occasion = data['occasion']
         attire = data['attire']
-        
         # Get initial analysis without images
-        response = client.chat.completions.create(
-            model="gpt-4o",
-            max_tokens=500,
-            messages=[
+        try:
+            response = client.chat.completions.create(
+                model="gpt-4o",
+                max_tokens=500,
+                messages=[
                 {
                     "role": "system",
                     "content": """You are a precise style and fashion analyzer. Analyze the image and return your response in JSON format only.
@@ -99,9 +128,13 @@ def analyze_selfie():
             ],
             response_format={ "type": "json_object" }
         )
-        
-        content = response.choices[0].message.content
-        result = json.loads(content)        
+        except OpenAIError as e:
+            raise APIError(f"OpenAI API error: {str(e)}", 502)
+        try:
+            content = response.choices[0].message.content
+            result = json.loads(content)
+        except (json.JSONDecodeError, AttributeError, IndexError) as e:
+            raise APIError(f"Error processing AI response: {str(e)}", 500)
 
         print("API Response:", result)
         return jsonify({
@@ -112,9 +145,10 @@ def analyze_selfie():
             "needsImageGeneration": True
         })
 
-            
+    except APIError as e:
+        raise        
     except Exception as e:
-        print(f"General Error: {str(e)}")
+        print(f"Unexpected error in analyze_selfie: {str(e)}")
         return jsonify({
             "success": False,
             "error": f"Server Error: {str(e)}"
