@@ -234,4 +234,4 @@ def generate_single_image(style, occasion, attire, gender, age_range):
     return image_response.data[0].url
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(host="0.0.0.0", debug=True)
