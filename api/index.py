@@ -1,6 +1,6 @@
 from flask import Flask, request, jsonify, render_template
 import base64
-from openai import AzureOpenAI, OpenAI, OpenAIError
+from openai import AzureOpenAI, OpenAIError
 import os
 from dotenv import load_dotenv
 from pathlib import Path
@@ -18,7 +18,11 @@ app = Flask(__name__,
             template_folder=str(current_dir / 'templates'),
             static_folder=str(current_dir / 'static'))
 
-client = OpenAI(api_key=os.environ.get('OPENAI_API_KEY'))
+gpt_client = AzureOpenAI(
+    api_key=os.environ.get('AZURE_OPENAI_API_KEY'),
+    api_version=os.environ.get('AZURE_OPENAI_API_VERSION', '2025-04-01-preview'),
+    azure_endpoint=os.environ.get('AZURE_OPENAI_ENDPOINT')
+)
 
 azure_client = AzureOpenAI(
     api_key=os.environ.get('AZURE_OPENAI_API_KEY'),  
@@ -70,8 +74,8 @@ def analyze_selfie():
         attire = data['attire']
         # Get initial analysis without images
         try:
-            response = client.chat.completions.create(
-                model="gpt-4o",
+            response = gpt_client.chat.completions.create(
+                model="gpt-5.4",
                 max_tokens=500,
                 messages=[
                 {

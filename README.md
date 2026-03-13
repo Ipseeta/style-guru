@@ -5,11 +5,13 @@ An AI-powered fashion recommendation system that provides personalized style sug
 ## ✨ Features
 
 ### 📸 Image Analysis
+
 - Take a selfie through your browser
 - Upload an existing photo
 - Real-time camera integration
 
 ### 🎯 Personalized Analysis
+
 - Age range estimation
 - Gender detection
 - Hair color analysis
@@ -17,6 +19,7 @@ An AI-powered fashion recommendation system that provides personalized style sug
 - Custom color palette recommendations
 
 ### 👚 Style Recommendations
+
 - Occasion-based outfit suggestions
   - Casual
   - Formal
@@ -26,6 +29,7 @@ An AI-powered fashion recommendation system that provides personalized style sug
 - Personalized clothing combinations
 
 ### ⚡ Fast Response
+
 - Immediate style analysis results
 - Background loading of AI-generated outfits
 - Responsive user interface
@@ -34,13 +38,14 @@ An AI-powered fashion recommendation system that provides personalized style sug
 
 - **Frontend**: HTML, CSS, JavaScript
 - **Backend**: Python, Flask
-- **AI/ML**: 
-  - OpenAI GPT-4 Vision (image analysis)
-  - DALL-E 3 (outfit visualization)
+- **AI/ML**:
+  - Azure OpenAI GPT-5.4 (image analysis)
+  - Azure OpenAI DALL-E 3 (outfit visualization)
 
 ## 🚀 Getting Started
 
 ### Prerequisites
+
 - Python 3.8+
 - OpenAI API key
 - Web browser with camera access (for selfie feature)
@@ -48,12 +53,14 @@ An AI-powered fashion recommendation system that provides personalized style sug
 ### Installation
 
 1. Clone the repository
+
 ```bash
 git clone https://github.com/yourusername/style-guru.git
 cd style-guru
 ```
 
 2. Install dependencies
+
 ```bash
 pip install -r requirements.txt
 ```
@@ -61,13 +68,14 @@ pip install -r requirements.txt
 3. Set up environment variables
 
 ```bash
-# Create .env file and add your OpenAI API key, Azure OpenAI Endpoint, and API Version
+# Create .env file and add your Azure OpenAI keys
 echo "AZURE_OPENAI_ENDPOINT=https://your-resource-name.openai.azure.com" >> .env
-echo "AZURE_OPENAI_KEY=your-azure-api-key" >> .env
-echo "AZURE_OPENAI_API_VERSION=2024-02-15-preview" >> .env
+echo "AZURE_OPENAI_API_KEY=your-azure-api-key" >> .env
+echo "AZURE_OPENAI_API_VERSION=version" >> .env
 ```
 
 4. Run the application
+
 ```bash
 python3 api/index.py
 ```
@@ -77,14 +85,17 @@ python3 api/index.py
 ## 📝 Usage
 
 1. **Start the App**
+
    - Open the application in your web browser
    - Allow camera access if you plan to take a selfie
 
 2. **Capture Image**
+
    - Click "Take Selfie" to use your camera
    - Or use "Choose file" to upload an existing photo
 
 3. **Select Occasion**
+
    - Choose from the dropdown menu:
      - Casual
      - Formal
@@ -118,4 +129,5 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 - Google Fonts for Playfair Display font
 
 ---
+
 Made with ❤️ by Ipseeta
